@@ -5,8 +5,8 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-#define MAX_MSG_LEN 128
-#define PAGE_SIZE 10
+#define MAX_MSG_LEN 128      // 最大日志消息长度
+#define PAGE_SIZE 10         // 每页显示的日志数量
 
 // 日志级别枚举
 typedef enum {
@@ -17,7 +17,7 @@ typedef enum {
     CRITICAL
 } LogLevel;
 
-// 日志结构体
+// 日志单链表结构体
 typedef struct LogEntry {
     time_t timestamp;
     LogLevel level;
@@ -139,6 +139,10 @@ bool delete_log(LogSystem* sys, int index) {
 }
 
 // 更新指定索引的日志
+//  参数：sys - 日志系统
+//        index - 要更新的日志索引
+//        new_message - 新的日志消息
+//  返回 true 表示成功，false 表示失败
 bool update_log(LogSystem* sys, int index, const char* new_message) {
     if (index < 0 || index >= sys->count) {
         printf("无效的日志索引！\n");
@@ -157,7 +161,7 @@ bool update_log(LogSystem* sys, int index, const char* new_message) {
         printf("新日志消息过长，将被截断！\n");
     }
     
-    strncpy(current->message, new_message, MAX_MSG_LEN - 1);
+    strncpy(current->message, new_message, MAX_MSG_LEN - 1); 
     current->message[MAX_MSG_LEN - 1] = '\0';
     
     // 更新日志时间戳
